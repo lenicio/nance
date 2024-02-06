@@ -98,3 +98,11 @@ td {
   color: rgb(255, 0, 0);
   cursor: pointer;
 }
+
+.btn-editar {
+  color: darkblue;
+}
+
+.btn-editar:hover {
+  color: rgb(11, 11, 255);
+}

@@ -81,6 +81,7 @@ $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
             <td><?= $dado['categoria_id'] ?></td>
             <td>
               <a href="./deletarReceita.php?id=<?= $dado['id'] ?>"><i class="btn-deletar fa-solid fa-trash"></i></a>
+              <a href="./editarReceita.php?id=<?= $dado['id'] ?>" class="btn-editar"><i class="fa-solid fa-pen-to-square"></i></a>
             </td>
           </tr>
         <?php endforeach; ?>

@@ -1,12 +1,25 @@
 <?php
 require "./config.php";
 
-$sql = "SELECT * FROM receitas";
+$sql = "SELECT 
+          receitas.id AS receita_id,
+          receitas.descricao AS receita_descricao,
+          receitas.valor AS receita_valor,
+          receitas.data_mvto AS receita_data_mvto,
+          categorias.id AS categoria_id,
+          categorias.descricao AS categoria_descricao
+        FROM receitas
+        INNER JOIN categorias ON receitas.categoria_id = categorias.id";
 $sql = $pdo->prepare($sql);
 $sql->execute();
 
 
 $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+$sql = "SELECT SUM(valor) as valor FROM receitas";
+$sql = $pdo->prepare($sql);
+$sql->execute();
+$totalReceita = $sql->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -31,6 +44,9 @@ $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
   </header>
 
   <main>
+    <span class="total">
+      <p>Total de Receitas: R$<?= $totalReceita['valor'] ?></p>
+    </span>
     <form action="cadastrarReceita.php" method="get">
       <label>
         Descrição
@@ -74,14 +90,14 @@ $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
       <tbody>
         <?php foreach ($dados as $dado) : ?>
           <tr>
-            <td><?= $dado['id'] ?></td>
-            <td><?= $dado['descricao'] ?></td>
-            <td><?= $dado['valor'] ?></td>
-            <td><?= $dado['data_mvto'] ?></td>
-            <td><?= $dado['categoria_id'] ?></td>
+            <td><?= $dado['receita_id'] ?></td>
+            <td><?= $dado['receita_descricao'] ?></td>
+            <td><?= $dado['receita_valor'] ?></td>
+            <td><?= $dado['receita_data_mvto'] ?></td>
+            <td><?= $dado['categoria_descricao'] ?></td>
             <td>
-              <a href="./deletarReceita.php?id=<?= $dado['id'] ?>"><i class="btn-deletar fa-solid fa-trash"></i></a>
-              <a href="./editarReceita.php?id=<?= $dado['id'] ?>" class="btn-editar"><i class="fa-solid fa-pen-to-square"></i></a>
+              <a href="./deletarReceita.php?id=<?= $dado['receita_id'] ?>"><i class="btn-deletar fa-solid fa-trash"></i></a>
+              <a href="./editarReceita.php?id=<?= $dado['receita_id'] ?>" class="btn-editar"><i class="fa-solid fa-pen-to-square"></i></a>
             </td>
           </tr>
         <?php endforeach; ?>
